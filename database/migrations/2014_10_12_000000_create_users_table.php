@@ -10,17 +10,26 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('users', function (Blueprint $table) {
+        $table->id();
+        $table->enum('role', ['Admin', 'User'])->default('User');
+        $table->string('email')->unique();
+        $table->string('password');
+        $table->string('username')->unique();
+        $table->string('kelass');
+        $table->date('dob');
+        $table->text('bio');
+        $table->string('phone_number');
+        $table->rememberToken();
+        $table->timestamps();
+    }); 
+    
+    // Set default role to 'User' for existing rows
+    DB::table('users')->update(['role' => 'User']);
+}
+
+    
 
     /**
      * Reverse the migrations.

@@ -10,6 +10,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\ProductStockController;
+use App\Http\Controllers\GaleriSekolahController;
 use App\Http\Controllers\TableCategoryController;
 
 /*
@@ -70,3 +71,6 @@ Route::post('/updateekskul/{id}',[EkskulController::class,'update']);
 
 Route::get('/listevent',[EventsController::class,'list']);
 Route::post('/addevent',[EventsController::class,'store']);
+
+Route::post('/addgaleri',[GaleriSekolahController::class,'store']);
+Route::get('/listgaleri',[GaleriSekolahController::class,'list']);
