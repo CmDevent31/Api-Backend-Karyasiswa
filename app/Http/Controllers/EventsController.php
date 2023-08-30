@@ -16,6 +16,7 @@ class EventsController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'user_id' => 'required|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -25,22 +26,22 @@ class EventsController extends Controller
         $event = new Events();
         $event->title = $request->input('title');
         $event->description = $request->input('description');
-
+        $event->user_id = $validated['user_id'];
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
             
             // Simpan gambar ke penyimpanan
             Storage::disk('public')->put($imagePath, file_get_contents($image));
-
-            $event->image = $imagePath;
+            
+            $event->image = url(Storage::url($imagePath)); // Mengambil URL lengkap gambar
         }
 
         $event->save();
 
         return response()->json([
             'success' => true,
-            'message' => 'Berhasil Menambahkan Ekskul!',
+            'message' => 'Berhasil Menambahkan Events!',
             'data' => $event
         ], 201);
     }
