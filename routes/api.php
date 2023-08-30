@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\EkskulController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\ArticleController;
@@ -71,6 +72,12 @@ Route::post('/updateekskul/{id}',[EkskulController::class,'update']);
 
 Route::get('/listevent',[EventsController::class,'list']);
 Route::post('/addevent',[EventsController::class,'store']);
+Route::post('/updateevent/{id}',[EventsController::class,'update']);
 
 Route::post('/addgaleri',[GaleriSekolahController::class,'store']);
 Route::get('/listgaleri',[GaleriSekolahController::class,'list']);
+
+
+Route::get('/listguru',[GuruController::class,'list']);
+Route::post('/addguru',[GuruController::class,'store']);
+Route::post('/updateguru/{id}',[GuruController::class,'update']);
