@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login','register','update']]);
     }
 
    // Fungsi untuk login
@@ -128,7 +128,7 @@ public function update(Request $request, $id)
             ], 404);
         }
 
-        // Define validation rules
+        // Define validation rules for update request
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:255|unique:users,email,' . $id,
             'password' => 'required|min:6',
@@ -171,6 +171,7 @@ public function update(Request $request, $id)
         ], 500);
     }
 }
+
 
 
 
