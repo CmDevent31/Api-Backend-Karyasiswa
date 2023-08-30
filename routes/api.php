@@ -29,9 +29,10 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::put('update-profile/{id}', [AuthController::class, 'update']);
+    Route::post('/update-profile/{id}', [AuthController::class, 'update']);
 
 });
+
 
 // routes/api.php
 
