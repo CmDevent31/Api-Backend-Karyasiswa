@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Auth\AuthenticationException;
 use App\Models\User; // Pastikan namespace yang sesuai
 
 class AuthController extends Controller
@@ -43,14 +44,16 @@ public function login(Request $request)
     if (!$user) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Email tidak ditemukan'
+            'message' => 'Email tidak ditemukan',
+            'data'   => [],
         ], 401);
     }
 
     if (!$token = JWTAuth::attempt($credentials)) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Password salah'
+            'message' => 'Password salah',
+            'data'    => [],
         ], 401);
     }
 
@@ -127,6 +130,11 @@ public function update(Request $request, $id)
                 'data' => (object)[],
             ], 404);
         }
+        if (!auth()->check()) {
+            throw new AuthenticationException('Unauthenticated.');
+        }
+
+
 
         // Define validation rules for update request
         $validator = Validator::make($request->all(), [
@@ -163,6 +171,12 @@ public function update(Request $request, $id)
             'message' => 'User information updated successfully',
             'data' => $user,
         ]);
+    } catch (AuthenticationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthenticated',
+            'data' => (object)[],
+        ], 401);
     } catch (Exception $e) {
         return response()->json([
             'success' => false,
