@@ -48,7 +48,7 @@ Route::delete('/destroy/{id}',[TableCategoryController::class,'destroy']);
 Route::get('/show',[ArticleController::class,'index']);
 Route::get('/detail/{id}',[ArticleController::class,'detail']);
 Route::post('/create',[ArticleController::class,'add']);
-Route::post('/renew/{id}',[ArticleController::class,'update']);
+Route::post('/renew/{id}', [ArticleController::class, 'update'])->middleware('canAdmin');
 Route::delete('/delete/{id}',[ArticleController::class,'destroy']);
 
 
