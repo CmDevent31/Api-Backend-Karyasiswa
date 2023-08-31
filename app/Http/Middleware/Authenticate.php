@@ -44,13 +44,13 @@ class Authenticate extends Middleware
 
             // Define validation rules for update request
             $validator = Validator::make($request->all(), [
-                'email' => 'sometimes|email|max:255|unique:users,email,' . $id,
-                'password' => 'sometimes|min:6',
-                'username' => 'sometimes|max:255',
-                'kelas' => 'sometimes|max:11',
-                'dob' => 'sometimes|max:255',
-                'bio' => 'sometimes|max:255',
-                'phone_number' => 'sometimes|max:14',
+                'email' => 'required|email|max:255|unique:users,email,' . $id,
+                'password' => 'required|min:6',
+                'username' => 'required|max:255',
+                'kelas' => 'required|max:11',
+                'dob' => 'required|max:255',
+                'bio' => 'required|max:255',
+                'phone_number' => 'required|max:14',
             ]);
 
             if ($validator->fails()) {

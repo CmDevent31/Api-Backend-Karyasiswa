@@ -130,17 +130,15 @@ public function update(Request $request, $id)
 
         // Define validation rules for update request
         $validator = Validator::make($request->all(), [
-            'role' =>  'sometimes|in:Admin,User',
-            'email' => 'sometimes|email|max:255|unique:users,email,' . $id,
-            'password' => 'sometimes|min:6',
-            'username' => 'sometimes|max:255',
-            'kelas' => 'sometimes|max:11',
-            'dob' => 'sometimes|max:255',
-            'bio' => 'sometimes|max:255',
-            'phone_number' => 'sometimes|max:14',
+            'email' => 'required|email|max:255|unique:users,email,' . $id,
+            'password' => 'required|min:6',
+            'username' => 'required|max:255',
+            'kelas' => 'required|max:11',
+            'dob' => 'required|max:255',
+            'bio' => 'required|max:255',
+            'phone_number' => 'required|max:14',
         ]);
 
-        // Check if validation fails
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -149,11 +147,13 @@ public function update(Request $request, $id)
             ], 422);
         }
 
-
-        // Update user's data
-        $user->fill($request->only([
-            'email', 'password', 'username', 'kelas', 'dob', 'bio', 'phone_number'
-        ]));
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user->username = $request->input('username');
+        $user->kelas = $request->input('kelas');
+        $user->dob = $request->input('dob');
+        $user->bio = $request->input('bio');
+        $user->phone_number = $request->input('phone_number');
 
         // Save the updated user's data
         $user->save();
@@ -171,7 +171,6 @@ public function update(Request $request, $id)
         ], 500);
     }
 }
-
 
 
 
