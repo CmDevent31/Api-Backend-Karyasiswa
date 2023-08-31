@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Illuminate\Auth\AuthenticationException;
 use App\Models\User; // Pastikan namespace yang sesuai
 
 class AuthController extends Controller
@@ -44,16 +43,14 @@ public function login(Request $request)
     if (!$user) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Email tidak ditemukan',
-            'data'   => [],
+            'message' => 'Email tidak ditemukan'
         ], 401);
     }
 
     if (!$token = JWTAuth::attempt($credentials)) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Password salah',
-            'data'    => [],
+            'message' => 'Password salah'
         ], 401);
     }
 
@@ -130,23 +127,20 @@ public function update(Request $request, $id)
                 'data' => (object)[],
             ], 404);
         }
-        if (!auth()->check()) {
-            throw new AuthenticationException('Unauthenticated.');
-        }
-
-
 
         // Define validation rules for update request
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email|max:255|unique:users,email,' . $id,
-            'password' => 'required|min:6',
-            'username' => 'required|max:255',
-            'kelas' => 'required|max:11',
-            'dob' => 'required|max:255',
-            'bio' => 'required|max:255',
-            'phone_number' => 'required|max:14',
+            'role' =>  'sometimes|in:Admin,User',
+            'email' => 'sometimes|email|max:255|unique:users,email,' . $id,
+            'password' => 'sometimes|min:6',
+            'username' => 'sometimes|max:255',
+            'kelas' => 'sometimes|max:11',
+            'dob' => 'sometimes|max:255',
+            'bio' => 'sometimes|max:255',
+            'phone_number' => 'sometimes|max:14',
         ]);
 
+        // Check if validation fails
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
@@ -155,13 +149,11 @@ public function update(Request $request, $id)
             ], 422);
         }
 
-        $user->email = $request->input('email');
-        $user->password = Hash::make($request->input('password'));
-        $user->username = $request->input('username');
-        $user->kelas = $request->input('kelas');
-        $user->dob = $request->input('dob');
-        $user->bio = $request->input('bio');
-        $user->phone_number = $request->input('phone_number');
+
+        // Update user's data
+        $user->fill($request->only([
+            'email', 'password', 'username', 'kelas', 'dob', 'bio', 'phone_number'
+        ]));
 
         // Save the updated user's data
         $user->save();
@@ -171,12 +163,6 @@ public function update(Request $request, $id)
             'message' => 'User information updated successfully',
             'data' => $user,
         ]);
-    } catch (AuthenticationException $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Unauthenticated',
-            'data' => (object)[],
-        ], 401);
     } catch (Exception $e) {
         return response()->json([
             'success' => false,
@@ -185,6 +171,7 @@ public function update(Request $request, $id)
         ], 500);
     }
 }
+
 
 
 
