@@ -47,7 +47,7 @@ class Authenticate extends Middleware
                 'email' => 'required|email|max:255|unique:users,email,' . $id,
                 'password' => 'required|min:6',
                 'username' => 'required|max:255',
-                'kelas' => 'required|max:11',
+                'kelas' => 'required|max:20',
                 'dob' => 'required|max:255',
                 'bio' => 'required|max:255',
                 'phone_number' => 'required|max:14',

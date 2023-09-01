@@ -133,7 +133,7 @@ public function update(Request $request, $id)
             'email' => 'required|email|max:255|unique:users,email,' . $id,
             'password' => 'required|min:6',
             'username' => 'required|max:255',
-            'kelas' => 'required|max:11',
+            'kelas' => 'required|max:20',
             'dob' => 'required|max:255',
             'bio' => 'required|max:255',
             'phone_number' => 'required|max:14',
@@ -163,6 +163,12 @@ public function update(Request $request, $id)
             'message' => 'User information updated successfully',
             'data' => $user,
         ]);
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'User not found',
+            'data' => (object)[],
+        ], 404);
     } catch (Exception $e) {
         return response()->json([
             'success' => false,
@@ -173,6 +179,15 @@ public function update(Request $request, $id)
 }
 
 
+public function GetUserInfo()
+{
+    $user = auth()->user();
+
+    return response()->json([
+        'status' => 'success',
+        'data' => $user,
+    ]);
+}
 
 
 
