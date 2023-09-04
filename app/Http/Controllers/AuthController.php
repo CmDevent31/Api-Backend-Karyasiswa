@@ -43,14 +43,16 @@ public function login(Request $request)
     if (!$user) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Email tidak ditemukan'
+            'message' => 'Email tidak ditemukan',
+            'data'    => [],
         ], 401);
     }
 
     if (!$token = JWTAuth::attempt($credentials)) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Password salah'
+            'message' => 'Password salah',
+            'data'  => [],
         ], 401);
     }
 
@@ -132,7 +134,7 @@ public function update(Request $request, $id)
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|max:255|unique:users,email,' . $id,
             'password' => 'required|min:6',
-            'username' => 'required|max:255',
+            'username' => '|required|max:255',
             'kelas' => 'required|max:20',
             'dob' => 'required|max:255',
             'bio' => 'required|max:255',
