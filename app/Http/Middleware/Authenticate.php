@@ -46,6 +46,7 @@ class Authenticate extends Middleware
             $validator = Validator::make($request->all(), [
                 'email' => 'required|email|max:255|unique:users,email,' . $id,
                 'password' => 'required|min:6',
+                'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
                 'username' => 'required|max:255',
                 'kelas' => '|required|max:20',
                 'dob' => 'required|max:255',
@@ -66,6 +67,7 @@ class Authenticate extends Middleware
             $user->username = $request->input('username');
             $user->kelas = $request->input('kelas');
             $user->dob = $request->input('dob');
+            $user->profile_image = $request->input('profile_image');
             $user->bio = $request->input('bio');
             $user->phone_number = $request->input('phone_number');
 
@@ -99,6 +101,6 @@ protected function isUpdateRequest(Request $request): bool
 {
     // Implement your logic to determine if it's an update request
     // For example, check the request method, route, or parameters
-    return $request->isMethod('post') && $request->routeIs('your.update.route');
+    return $request->isMethod('post') && $request->routeIs('/update-profile/{id}');
 }
 }
