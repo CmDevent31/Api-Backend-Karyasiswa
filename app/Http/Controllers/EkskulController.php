@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ekskul;
+use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
@@ -17,15 +18,29 @@ class EkskulController extends Controller
         return view('ekskul');
     }
 
-    // public function getDataFromApi()
-    // {
-    //     // Panggil API atau gunakan data dari Postman
-    //     // Proses data jika diperlukan
+    public function getListEkskul()
+    {
+        $client = new Client(); // Buat instance Guzzle Client
     
-    //     $data = []; // Data yang akan ditampilkan di view
+        try {
+            // Panggil route API yang sesuai
+            $response = $client->get('http://192.168.1.10:8000/listekskul2'); // Ganti dengan URL backend Anda
+            $data = json_decode($response->getBody(), true); // Ambil data dari respons
     
-    //     return view('ekskul', ['data' => $data]);
-    // }
+            // Jika Anda ingin menyimpan data yang diambil dari API ke dalam tabel Ekskul Anda, Anda dapat melakukannya seperti ini:
+            // Ekskul::insert($data);
+    
+            // Anda juga dapat memanggil data dari tabel Ekskul jika Anda telah menyimpannya sebelumnya
+            $data = Ekskul::all();
+    
+            // Anda dapat melakukan apa yang Anda inginkan dengan data di sini
+            // Misalnya, mengirimkan data ke frontend
+            return response()->json($data);
+        } catch (\Exception $e) {
+            // Tangani kesalahan jika terjadi
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
     public function store(Request $request)
     {

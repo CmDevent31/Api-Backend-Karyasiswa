@@ -67,7 +67,7 @@ Route::get('/stocklist',[ProductStockController::class,'index']);
 Route::post('/updatestock/{id}',[ProductStockController::class,'update']);
 
 Route::post('/addekskul',[EkskulController::class,'store']);
-Route::get('/listekskul',[EkskulController::class,'list']);
+
 Route::post('/updateekskul/{id}',[EkskulController::class,'update']);
 
 Route::get('/listevent',[EventsController::class,'list']);
@@ -75,3 +75,8 @@ Route::post('/addevent',[EventsController::class,'store']);
 
 Route::post('/addgaleri',[GaleriSekolahController::class,'store']);
 Route::get('/listgaleri',[GaleriSekolahController::class,'list']);
+
+// Route::middleware('auth:api')->get('/listekskul', [EkskulController::class, 'list']);
+Route::get('/listekskul', [EkskulController::class, 'getListEkskul']);
+Route::get('/listekskul2', [EkskulController::class, 'list']);
+
