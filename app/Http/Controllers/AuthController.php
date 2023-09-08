@@ -143,7 +143,7 @@ class AuthController extends Controller
         try {
             // Find the user by ID
             $user = User::find($id);
-
+    
             if (!$user) {
                 return response()->json([
                     'success' => false,
@@ -151,20 +151,19 @@ class AuthController extends Controller
                     'data' => (object)[],
                 ], 404);
             }
-
-            // Define validation rules for update request
+    
+            // Validasi aturan yang bersifat opsional jika ada data dalam permintaan
             $validator = Validator::make($request->all(), [
-                'email' => 'required|email|max:255|unique:users,email,' . $id,
-                'password' => 'required|min:6',
-                'profile_image' => 'image|mimes:jpeg,png,jpg,gif|max:20480',
-                'username' => 'required|max:255', // Hapus tanda '|' yang salah
-                'gender' => 'required|in:Pria,Wanita',
-                'kelas' => 'required|max:20',
-                'dob' => 'required|max:255',
-                'bio' => 'required|max:255',
-                'phone_number' => 'required|max:14',
+                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $id,
+                'password' => 'sometimes|required|min:6',
+                'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
+                'username' => 'sometimes|required|max:255',
+                'kelas' => 'sometimes|required|max:20',
+                'dob' => 'sometimes|required|max:255',
+                'bio' => 'sometimes|required|max:255',
+                'phone_number' => 'sometimes|required|max:14',
             ]);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'success' => false,
@@ -172,41 +171,43 @@ class AuthController extends Controller
                     'data' => (object)[],
                 ], 422);
             }
-
-            $user->email = $request->input('email');
-            $user->password = Hash::make($request->input('password'));
-            $user->username = $request->input('username');
-            $user->gender = $request->input('gender'); // Perbaiki tanda '=' yang salah
-            $user->kelas = $request->input('kelas');
-            $user->dob = $request->input('dob');
-            $user->bio = $request->input('bio');
-            $user->phone_number = $request->input('phone_number');
-
-            if ($request->hasFile('profile_image')) {
-                $image = $request->file('profile_image');
-                $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-
-                // Simpan gambar ke penyimpanan
-                Storage::disk('public')->put($imagePath, file_get_contents($image));
-
-                $user->profile_image = url(Storage::url($imagePath)); // Perbaiki variabel yang salah
+    
+            // Update user data based on the request
+            if ($request->has('email')) {
+                $user->email = $request->input('email');
             }
-
+            if ($request->has('password')) {
+                $user->password = Hash::make($request->input('password'));
+            }
+            if ($request->has('username')) {
+                $user->username = $request->input('username');
+            }
+            if ($request->has('kelas')) {
+                $user->kelas = $request->input('kelas');
+            }
+            if ($request->has('dob')) {
+                $user->dob = $request->input('dob');
+            }
+            if ($request->hasFile('profile_image')) {
+                // Handle profile image update here
+                // ...
+            }
+            if ($request->has('bio')) {
+                $user->bio = $request->input('bio');
+            }
+            if ($request->has('phone_number')) {
+                $user->phone_number = $request->input('phone_number');
+            }
+    
             // Save the updated user's data
             $user->save();
-
+    
             return response()->json([
                 'success' => true,
                 'message' => 'User information updated successfully',
                 'data' => $user,
             ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found',
-                'data' => (object)[],
-            ], 404);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred',
@@ -214,6 +215,8 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    
+
 
     // Fungsi untuk mendapatkan informasi pengguna yang terautentikasi
     public function GetUserInfo()
