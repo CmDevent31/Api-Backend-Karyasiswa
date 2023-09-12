@@ -30,10 +30,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', [AuthController::class, 'register']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('refresh', [AuthController::class, 'refresh']);
-    Route::put('update-profile/{id}', [AuthController::class, 'update']);
+    Route::post('/update-profile/{id}', [AuthController::class, 'update']);
 
 });
 
+
+// routes/api.php
 // routes/api.php
 
 
@@ -67,7 +69,7 @@ Route::get('/stocklist',[ProductStockController::class,'index']);
 Route::post('/updatestock/{id}',[ProductStockController::class,'update']);
 
 Route::post('/addekskul',[EkskulController::class,'store']);
-Route::get('/listekskul',[EkskulController::class,'list']);
+
 Route::post('/updateekskul/{id}',[EkskulController::class,'update']);
 
 Route::get('/listevent',[EventsController::class,'list']);
