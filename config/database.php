@@ -48,16 +48,19 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'db_karya_siswa'), // Sesuaikan dengan nama database Anda
-            'username' => env('DB_USERNAME', 'root'), // Sesuaikan dengan nama pengguna MySQL Anda
-            'password' => env('DB_PASSWORD', ''), // Sesuaikan dengan kata sandi MySQL Anda
+            'database' => env('DB_DATABASE', 'db_karya_siswa'), // Ganti dengan nama database yang sesuai
+            'username' => env('DB_USERNAME', 'root'), // Ganti dengan nama pengguna MySQL Anda
+            'password' => env('DB_PASSWORD', ''), // Ganti dengan kata sandi MySQL Anda
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
-            'strict' => true, // Ubah ini ke true jika Anda ingin mengaktifkan mode strict SQL
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
         ],
-        
         
 
         'pgsql' => [
