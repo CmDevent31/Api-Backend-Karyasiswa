@@ -60,6 +60,43 @@ Route::post('ekskuls/{id}', [EkskulController::class, 'update']);
 Route::get('events', [EventsController::class, 'list']);
 Route::post('events', [EventsController::class, 'store']);
 
-// Galeri Sekolah routes
-Route::post('galeri-sekolah', [GaleriSekolahController::class, 'store']);
-Route::get('galeri-sekolah', [GaleriSekolahController::class, 'list']);
+Route::get('/list',[TableCategoryController::class,'index']);
+Route::post('/store',[TableCategoryController::class,'create']);
+Route::post('/update/{id}',[TableCategoryController::class,'update']);
+Route::delete('/destroy/{id}',[TableCategoryController::class,'destroy']);
+
+Route::get('/show',[ArticleController::class,'index']);
+Route::get('/detail/{id}',[ArticleController::class,'detail']);
+Route::post('/create',[ArticleController::class,'add']);
+Route::post('/renew/{id}',[ArticleController::class,'update']);
+Route::delete('/delete/{id}',[ArticleController::class,'destroy']);
+
+
+Route::get('/listcomment',[CommentController::class,'index']);
+Route::post('/add',[CommentController::class,'create']);
+Route::put('/deletecomment/{id}',[CommentController::class,'destroy']);
+
+Route::post('/addproduk',[ProductController::class,'add']);
+Route::get('/listproduk',[ProductController::class,'index']);
+Route::get('/detailproduk/{id}',[ProductController::class,'detail']);
+Route::post('/updateproduk/{id}',[ProductController::class,'update']);
+Route::put('/deleteproduk/{id}',[ProductController::class,'destroy']);
+
+Route::post('/membuatstock',[ProductStockController::class,'add']);
+Route::get('/stocklist',[ProductStockController::class,'index']);
+Route::post('/updatestock/{id}',[ProductStockController::class,'update']);
+
+Route::post('/addekskul',[EkskulController::class,'store']);
+
+Route::post('/updateekskul/{id}',[EkskulController::class,'update']);
+
+Route::get('/listevent',[EventsController::class,'list']);
+Route::post('/addevent',[EventsController::class,'store']);
+
+Route::post('/addgaleri',[GaleriSekolahController::class,'store']);
+Route::get('/listgaleri',[GaleriSekolahController::class,'list']);
+
+// Route::middleware('auth:api')->get('/listekskul', [EkskulController::class, 'list']);
+Route::get('/listekskul', [EkskulController::class, 'getListEkskul']);
+Route::get('/listekskul2', [EkskulController::class, 'list']);
+
