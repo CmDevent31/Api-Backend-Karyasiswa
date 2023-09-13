@@ -19,7 +19,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 Route::post('logout', [AuthController::class, 'logout']);
 Route::post('refresh', [AuthController::class, 'refresh']);
-Route::put('update-profile/{id}', [AuthController::class, 'update']);
+Route::post('update-profile/{id}', [AuthController::class, 'update']);
 
 // Table Category routes
 Route::get('table-categories', [TableCategoryController::class, 'index']);

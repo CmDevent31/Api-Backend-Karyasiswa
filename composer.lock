@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d858118f2c195e3e7e136e588013aae",
+    "content-hash": "2ede7a555f603ab01ffdbde4c33f8999",
     "packages": [
         {
             "name": "brick/math",
@@ -972,7 +972,7 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.21.1",
+            "version": "v10.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",

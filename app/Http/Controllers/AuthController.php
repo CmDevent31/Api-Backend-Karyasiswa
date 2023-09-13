@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use JWTAuth;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use App\Http\Middleware\AuthenticateMiddleware;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('custom.auth', ['except' => ['login', 'register']]);
-        $this->middleware(AuthenticateMiddleware::class, ['only' => ['update']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','update','logout']]);
     }
 
     public function login(Request $request)
@@ -143,15 +144,16 @@ class AuthController extends Controller
                 'data' => (object)[],
             ], 404);
         }
-
-        if (auth()->user()->id != $userToUpdate->id) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Anda tidak memiliki izin untuk mengupdate profil pengguna lain',
-                'data' => (object)[],
-            ], 403);
-        }
-
+        
+        // if (Gate::denies('update-user', $id)) {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Anda tidak memiliki izin untuk mengakses pengguna ini',
+        //         'data' => (object)[],
+        //     ], 403);
+        // }
+        
+    
         $validator = Validator::make($request->all(), [
             'email' => 'sometimes|required|email|max:255|unique:users,email,' . $userToUpdate->id,
             'password' => 'sometimes|required|min:6',
@@ -162,7 +164,7 @@ class AuthController extends Controller
             'bio' => 'sometimes|required|max:255',
             'phone_number' => 'sometimes|required|max:14',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
@@ -170,7 +172,7 @@ class AuthController extends Controller
                 'data' => (object)[],
             ], 422);
         }
-
+    
         if ($request->has('email')) {
             $userToUpdate->email = $request->input('email');
         }
@@ -188,7 +190,7 @@ class AuthController extends Controller
         }
         if ($request->hasFile('profile_image')) {
             $profileImage = $request->file('profile_image');
-
+    
             $allowedTypes = ['jpeg', 'jpg', 'png', 'gif'];
             $fileExtension = $profileImage->getClientOriginalExtension();
             if (!in_array($fileExtension, $allowedTypes)) {
@@ -198,12 +200,12 @@ class AuthController extends Controller
                     'data' => (object)[],
                 ], 400);
             }
-
+    
             $uploadPath = 'profile_images/';
             $fileName = 'profile_' . $userToUpdate->id . '.' . $fileExtension;
-
+    
             $profileImage->move($uploadPath, $fileName);
-
+    
             $userToUpdate->profile_image = $uploadPath . $fileName;
         }
         if ($request->has('bio')) {
@@ -212,15 +214,17 @@ class AuthController extends Controller
         if ($request->has('phone_number')) {
             $userToUpdate->phone_number = $request->input('phone_number');
         }
+    
 
         $userToUpdate->save();
-
+    
         return response()->json([
             'status' => 'success',
             'message' => 'Informasi pengguna berhasil diperbarui',
             'data' => $userToUpdate,
         ]);
     }
+    
 
     public function getUserInfo()
     {
