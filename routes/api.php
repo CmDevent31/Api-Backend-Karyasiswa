@@ -100,3 +100,6 @@ Route::get('/listgaleri',[GaleriSekolahController::class,'list']);
 Route::get('/listekskul', [EkskulController::class, 'getListEkskul']);
 Route::get('/listekskul2', [EkskulController::class, 'list']);
 
+Route::get('/database-url', function () {
+    return env('DATABASE_URL');
+});

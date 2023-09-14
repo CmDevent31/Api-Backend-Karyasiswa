@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'rethinkdb'),
 
     /*
     |--------------------------------------------------------------------------
@@ -92,6 +92,16 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+
+        'rethinkdb' => [
+            'driver' => 'rethinkdb',
+            'host' => env('RETHINKDB_HOST', '3bc6a989-062c-4841-8ff4-0d9fd7b1793e.db.rdb.rethinkdb.cloud'),
+            'port' => env('RETHINKDB_PORT', 28015),
+            'database' => env('RETHINKDB_DATABASE', 'test'),
+            'username' => env('DB_USERNAME', '3bc6a989-062c-4841-8ff4-0d9fd7b1793e'),
+            'password' => env('DB_PASSWORD', 'a9b83ce154c0023f418edb18797266fccc5f76db'),
+        ],
+     
 
     ],
 
