@@ -45,12 +45,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', 'frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'db_karya_siswa'), // Ganti dengan nama database yang sesuai
-            'username' => env('DB_USERNAME', 'root'), // Ganti dengan nama pengguna MySQL Anda
-            'password' => env('DB_PASSWORD', ''), // Ganti dengan kata sandi MySQL Anda
+            'database' => env('DB_DATABASE', 'd7dqr3hs5hurj7da'),
+            'username' => env('DB_USERNAME', 'fjyetlto0rlwuyum'),
+            'password' => env('DB_PASSWORD', 'rg3pn6jpxjyl8nep'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
