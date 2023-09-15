@@ -69,7 +69,7 @@ Route::get('/stocklist',[ProductStockController::class,'index']);
 Route::post('/updatestock/{id}',[ProductStockController::class,'update']);
 
 Route::post('/addekskul',[EkskulController::class,'store']);
-
+Route::get('/listekskul2',[EkskulController::class, 'list']);
 Route::post('/updateekskul/{id}',[EkskulController::class,'update']);
 
 Route::get('/listevent',[EventsController::class,'list']);
