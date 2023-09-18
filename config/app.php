@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'https://backend-karya-siswa-2659a9a81981.herokuapp.com/'),
 
     'asset_url' => env('ASSET_URL'),
 
