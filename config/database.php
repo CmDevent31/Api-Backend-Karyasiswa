@@ -45,23 +45,22 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
-            'port' => env('3306'),
-            'database' => env('d7dqr3hs5hurj7da'),
-            'username' => env('fjyetlto0rlwuyum'),
-            'password' => env('rg3pn6jpxjyl8nep'),
+            'host' => env('DB_HOST', 'frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'd7dqr3hs5hurj7da'),
+            'username' => env('DB_USERNAME', 'fjyetlto0rlwuyum'),
+            'password' => env('DB_PASSWORD', 'rg3pn6jpxjyl8nep'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
-            'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
+        
 
         'pgsql' => [
             'driver' => 'pgsql',
@@ -92,6 +91,16 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+
+        'rethinkdb' => [
+            'driver' => 'rethinkdb',
+            'host' => env('RETHINKDB_HOST', '3bc6a989-062c-4841-8ff4-0d9fd7b1793e.db.rdb.rethinkdb.cloud'),
+            'port' => env('RETHINKDB_PORT', 28015),
+            'database' => env('RETHINKDB_DATABASE', 'test'),
+            'username' => env('DB_USERNAME', '3bc6a989-062c-4841-8ff4-0d9fd7b1793e'),
+            'password' => env('DB_PASSWORD', 'a9b83ce154c0023f418edb18797266fccc5f76db'),
+        ],
+     
 
     ],
 

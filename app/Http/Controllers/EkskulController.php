@@ -142,4 +142,3 @@ class EkskulController extends Controller
         return response()->json($data);
     }
 }
-
