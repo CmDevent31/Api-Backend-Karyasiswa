@@ -86,6 +86,9 @@ class EkskulController extends Controller
             
             // Menggabungkan semua URL gambar menjadi satu string dengan pemisah koma
             $ekskul->image = implode(',', $imageUrls);
+        } else {
+            // Jika tidak ada gambar diunggah, set image menjadi null
+            $ekskul->image = null;
         }
         
         
