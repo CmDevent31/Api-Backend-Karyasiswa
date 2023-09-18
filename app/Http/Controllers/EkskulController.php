@@ -58,18 +58,40 @@ class EkskulController extends Controller
         $ekskul = new Ekskul();
         $ekskul->title = $request->input('title');
         $ekskul->description = $request->input('description');
-        
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-    
-            // Simpan gambar ke penyimpanan menggunakan Storage
-            Storage::put($imagePath, file_get_contents($image));
-    
-            // Simpan path gambar ke dalam model
-            $ekskul->image = $imagePath;
+            $images = $request->file('image');
+            
+            // Set path to store the images
+            $imagePath = 'public/images/';
+            
+            // Initialize an array to store image URLs
+            $imageUrls = [];
+            
+            foreach ($images as $image) {
+                // Cek apakah file adalah file gambar yang valid
+                if ($image->isValid()) {
+                    // Generate a unique filename
+                    $imageName = time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
+                    
+                    // Simpan gambar ke penyimpanan lokal dengan nama yang sama
+                    $image->storeAs($imagePath, $imageName);
+                    
+                    // Generate URL gambar dari penyimpanan lokal
+                    $imageUrl = asset('storage/images/' . $imageName);
+                    
+                    // Tambahkan URL gambar ke dalam array
+                    $imageUrls[] = $imageUrl;
+                }
+            }
+            
+            // Menggabungkan semua URL gambar menjadi satu string dengan pemisah koma
+            $ekskul->image = implode(',', $imageUrls);
+        } else {
+            // Jika tidak ada gambar diunggah, set image menjadi null
+            $ekskul->image = null;
         }
-    
+        
+        
         
         // Simpan data ekskul
             $ekskul->save();
