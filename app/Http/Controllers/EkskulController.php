@@ -59,13 +59,18 @@ class EkskulController extends Controller
         $ekskul->title = $request->input('title');
         $ekskul->description = $request->input('description');
         
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-            
-            // Simpan gambar ke penyimpanan
-          
-        }
+   if ($request->hasFile('image')) {
+    $image = $request->file('image');
+    $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
+
+    // Simpan gambar ke penyimpanan awan (misalnya, Amazon S3)
+    Storage::disk('s3')->put($imagePath, file_get_contents($image));
+
+    $ekskul = new Ekskul(); // Sesuaikan dengan model yang sesuai
+    $ekskul->image = Storage::disk('s3')->url($imagePath); // Mengambil URL lengkap gambar dari penyimpanan awan
+    $ekskul->save(); // Simpan objek Ekskul ke database
+}
+
         
         // Simpan data ekskul
             $ekskul->save();
