@@ -69,22 +69,26 @@ class EkskulController extends Controller
             $imageUrls = [];
             
             foreach ($images as $image) {
-                // Generate a unique filename
-                $imageName = time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-                
-                // Simpan gambar ke penyimpanan lokal dengan nama yang sama
-                $image->storeAs($imagePath, $imageName);
-                
-                // Generate URL gambar dari penyimpanan lokal
-                $imageUrl = asset('storage/images/' . $imageName);
-                
-                // Tambahkan URL gambar ke dalam array
-                $imageUrls[] = $imageUrl;
+                // Cek apakah file adalah file gambar yang valid
+                if ($image->isValid()) {
+                    // Generate a unique filename
+                    $imageName = time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
+                    
+                    // Simpan gambar ke penyimpanan lokal dengan nama yang sama
+                    $image->storeAs($imagePath, $imageName);
+                    
+                    // Generate URL gambar dari penyimpanan lokal
+                    $imageUrl = asset('storage/images/' . $imageName);
+                    
+                    // Tambahkan URL gambar ke dalam array
+                    $imageUrls[] = $imageUrl;
+                }
             }
             
             // Menggabungkan semua URL gambar menjadi satu string dengan pemisah koma
             $ekskul->image = implode(',', $imageUrls);
         }
+        
         
         
         // Simpan data ekskul
