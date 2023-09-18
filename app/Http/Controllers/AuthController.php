@@ -161,7 +161,7 @@ public function update(Request $request, $id)
         }
 
         // 2. Mengambil pengguna yang sedang diautentikasi
-        $authenticatedUser = Auth::user();
+        $authenticatedUser = Auth::users();
 
         // 3. Pastikan pengguna terotentikasi dengan benar
         if (!$authenticatedUser || !$authenticatedUser->id) {
