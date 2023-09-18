@@ -60,14 +60,8 @@ class EkskulController extends Controller
         $ekskul->description = $request->input('description');
         
        if ($request->hasFile('image')) {
-    $image = $request->file('image');
-    $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-    
-    // Simpan gambar ke penyimpanan lokal
-    Storage::disk('public')->put($imagePath, file_get_contents($image));
-    
-    // Mengambil URL lengkap gambar dari penyimpanan lokal
-    $ekskul->image = url(Storage::url($imagePath));
+        $image = $request->file('image');
+        $image->storeAs('public/posts', $image->hashName());
 }
 
         
