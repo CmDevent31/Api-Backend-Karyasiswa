@@ -58,7 +58,6 @@ class EkskulController extends Controller
         $ekskul = new Ekskul();
         $ekskul->title = $request->input('title');
         $ekskul->description = $request->input('description');
-        
         if ($request->hasFile('image')) {
             $images = $request->file('image');
             
