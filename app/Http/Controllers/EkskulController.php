@@ -64,9 +64,7 @@ class EkskulController extends Controller
             $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
             
             // Simpan gambar ke penyimpanan
-            Storage::disk('public')->put($imagePath, file_get_contents($image));
-            
-            $ekskul->image = url(Storage::url($imagePath)); // Mengambil URL lengkap gambar
+          
         }
         
         // Simpan data ekskul

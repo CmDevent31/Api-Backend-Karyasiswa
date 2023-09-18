@@ -47,11 +47,11 @@ Route::post('/store',[TableCategoryController::class,'create']);
 Route::post('/update/{id}',[TableCategoryController::class,'update']);
 Route::delete('/destroy/{id}',[TableCategoryController::class,'destroy']);
 
-Route::get('/show',[ArticleController::class,'index']);
-Route::get('/detail/{id}',[ArticleController::class,'detail']);
-Route::post('/create',[ArticleController::class,'add']);
-Route::post('/renew/{id}',[ArticleController::class,'update']);
-Route::delete('/delete/{id}',[ArticleController::class,'destroy']);
+// Route::get('/show',[ArticleController::class,'index']);
+// Route::get('/detail/{id}',[ArticleController::class,'detail']);
+// Route::post('/create',[ArticleController::class,'add']);
+// Route::post('/renew/{id}',[ArticleController::class,'update']);
+// Route::delete('/delete/{id}',[ArticleController::class,'destroy']);
 
 
 Route::get('/listcomment',[CommentController::class,'index']);
