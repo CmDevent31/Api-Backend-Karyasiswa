@@ -37,7 +37,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'url' => env('DATABASE_URL'),
+            'url' => env('mysql://fjyetlto0rlwuyum:rg3pn6jpxjyl8nep@frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/d7dqr3hs5hurj7da'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
@@ -46,11 +46,11 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('db_karya_siswa', 'forge'),
-            'username' => env('root', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => env('frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
+            'port' => env('3306'),
+            'database' => env('d7dqr3hs5hurj7da'),
+            'username' => env('fjyetlto0rlwuyum'),
+            'password' => env('rg3pn6jpxjyl8nep'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
