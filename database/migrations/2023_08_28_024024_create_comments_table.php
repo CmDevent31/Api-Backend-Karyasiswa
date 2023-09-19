@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('comment');
             $table->integer('member_id');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

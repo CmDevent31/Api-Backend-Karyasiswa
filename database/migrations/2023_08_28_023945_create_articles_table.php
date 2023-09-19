@@ -19,7 +19,6 @@ return new class extends Migration
             $table->integer('total_comment');
             $table->integer('user_id');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
