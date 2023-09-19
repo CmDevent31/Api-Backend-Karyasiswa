@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name',100);
             $table->timestamps();
             $table->enum('deleted', ['0', '1']);
-            $table->softDeletes();
         });
     }
 
