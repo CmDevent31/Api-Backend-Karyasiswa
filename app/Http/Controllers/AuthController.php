@@ -150,48 +150,7 @@ class AuthController extends Controller
     }
 public function update(Request $request, $id)
 {
-    try {
-        // 1. Pastikan parameter $id valid
-        if (!is_numeric($id) || $id <= 0) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'ID pengguna tidak valid',
-                'data' => (object)[],
-            ], 400);
-        }
-
-        // 2. Mengambil pengguna yang sedang diautentikasi
-        $authenticatedUser = Auth::users();
-
-        // 3. Pastikan pengguna terotentikasi dengan benar
-        if (!$authenticatedUser || !$authenticatedUser->id) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Anda tidak terotentikasi dengan benar',
-                'data' => (object)[],
-            ], 401);
-        }
-
-        // 4. Mencari pengguna berdasarkan ID
-        $userToUpdate = User::find($id);
-
-        // 5. Pastikan pengguna yang ditemukan
-        if (!$userToUpdate) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Pengguna tidak ditemukan',
-                'data' => (object)[],
-            ], 404);
-        }
-
-        // 6. Memeriksa apakah pengguna yang diautentikasi adalah pemilik data yang akan diperbarui
-        if ($authenticatedUser->id !== $userToUpdate->id) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Anda tidak memiliki izin untuk mengakses pengguna ini',
-                'data' => (object)[],
-            ], 403);
-        }
+  
 
         // 7. Validasi data yang dikirim dalam permintaan
         $validator = Validator::make($request->all(), [
@@ -252,14 +211,14 @@ public function update(Request $request, $id)
             'message' => 'Data pengguna berhasil diperbarui',
             'data' => $userToUpdate,
         ], 200);
-    } catch (\Exception $e) {
+   
         // 14. Tangani kesalahan internal server dengan respons 500
         return response()->json([
             'status' => 'error',
             'message' => 'Terjadi kesalahan internal server: ' . $e->getMessage(),
             'data' => (object)[],
         ], 500);
-    }
+    
 }
 
     
