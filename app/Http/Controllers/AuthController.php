@@ -150,7 +150,7 @@ class AuthController extends Controller
     }
     public function update(Request $request, $id)
     {
-        try {
+        // try {
             // 1. Find the user to update
             $userToUpdate = User::findOrFail($id);
     
@@ -224,14 +224,14 @@ class AuthController extends Controller
                 'message' => 'User data updated successfully',
                 'data' => $userToUpdate,
             ], 200);
-        } catch (\Exception $e) {
-            // 8. Handle internal server errors
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Internal server error: ' . $e->getMessage(),
-                'data' => (object)[],
-            ], 500);
-        }
+    //     } catch (\Exception $e) {
+    //         // 8. Handle internal server errors
+    //         return response()->json([
+    //             'status' => 'error',
+    //             'message' => 'Internal server error: ' . $e->getMessage(),
+    //             'data' => (object)[],
+    //         ], 500);
+    //     }
     }
     
 
