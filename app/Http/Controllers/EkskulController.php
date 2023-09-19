@@ -42,29 +42,29 @@ class EkskulController extends Controller
         }
     }
 
+    
     public function store(Request $request)
     {
-        
         $validator = Validator::make($request->all(), [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-
+    
         $ekskul = new Ekskul();
         $ekskul->title = $request->input('title');
         $ekskul->description = $request->input('description');
-        
+    
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
             
             // Simpan gambar ke penyimpanan
-            Storage::disk('local')->put($imagePath, file_get_contents($image));
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
             
             // URL lengkap gambar (termasuk base URL)
             $fullImageUrl = asset('storage/' . $imagePath);
