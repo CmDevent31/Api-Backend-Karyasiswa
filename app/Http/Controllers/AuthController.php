@@ -162,7 +162,16 @@ class AuthController extends Controller
                     'data' => (object)[],
                 ], 403);
             }
-    
+            if (Gate::denies('update', $userToUpdate)) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Unauthorized to update this user',
+                    'data' => (object)[],
+                ], 403);
+            }
+        
+
+
             // 3. Validate the request data
             $validator = Validator::make($request->all(), [
                 'email' => 'sometimes|required|email|max:255|unique:users,email,' . $userToUpdate->id,
