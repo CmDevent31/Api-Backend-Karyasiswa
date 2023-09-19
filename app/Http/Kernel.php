@@ -14,7 +14,7 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
+        \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
@@ -40,7 +40,6 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            // ...
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -48,7 +47,6 @@ class Kernel extends HttpKernel
             'auth:api',
             \Illuminate\Auth\Middleware\Authenticate::class,
         ],
-        
     ];
 
     /**
@@ -75,7 +73,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth:api' => \Illuminate\Auth\Middleware\Authenticate::class,
-        // ...
+        // ... Middleware rute lainnya.
     ];
-    
 }
