@@ -15,11 +15,12 @@ use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+
 class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','update','logout']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
     public function login(Request $request)
@@ -62,15 +63,7 @@ class AuthController extends Controller
             // Mengambil data pengguna yang terautentikasi
             $user = auth()->user();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Login berhasil',
-                'data' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer'
-                ]
-            ]);
+            return $this->createNewToken($token, $user);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -105,7 +98,6 @@ class AuthController extends Controller
             }
 
             // Membuat pengguna baru
-            $role = $request->input('role', 'User');
             $user = new User();
             $user->email = $request->input('email');
             $user->password = bcrypt($request->input('password'));
@@ -116,7 +108,6 @@ class AuthController extends Controller
             $user->dob = $request->input('dob');
             $user->bio = $request->input('bio');
             $user->phone_number = $request->input('phone_number');
-            $user->role = $role;
 
             if ($request->hasFile('profile_image')) {
                 $image = $request->file('profile_image');
@@ -131,15 +122,7 @@ class AuthController extends Controller
 
             $token = JWTAuth::fromUser($user);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Pengguna berhasil dibuat',
-                'data' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer'
-                ]
-            ]);
+            return $this->createNewToken($token, $user);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -162,15 +145,6 @@ class AuthController extends Controller
                     'data' => (object)[],
                 ], 403);
             }
-            if (Gate::denies('update', $userToUpdate)) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'Unauthorized to update this user',
-                    'data' => (object)[],
-                ], 403);
-            }
-        
-
 
             // 3. Validate the request data
             $validator = Validator::make($request->all(), [
