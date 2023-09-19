@@ -42,8 +42,7 @@ class EkskulController extends Controller
         }
     }
 
-    use Illuminate\Support\Facades\Storage;
-
+    
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -62,18 +61,22 @@ class EkskulController extends Controller
     
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-    
-            // Store the image in the cloud storage and get the URL
-            $imagePath = $image->store('uploads', 's3'); // 'uploads' is the directory within the cloud storage
-            $imageUrl = Storage::disk('s3')->url($imagePath);
-    
-            // Set the URL to the image in the model
-            $ekskul->image = $imageUrl;
+            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
+            
+            // Simpan gambar ke penyimpanan
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
+            
+            // URL lengkap gambar (termasuk base URL)
+            $fullImageUrl = asset('storage/' . $imagePath);
+            
+            $ekskul->image = $fullImageUrl; // Set URL lengkap gambar ke kolom 'image'
         }
-    
-        // Save the Ekskul model
-        $ekskul->save();
-    
+        
+        
+        // Simpan data ekskul
+            $ekskul->save();
+
+
         return response()->json([
             'success' => true,
             'message' => 'Berhasil Menambahkan Ekskul!',
