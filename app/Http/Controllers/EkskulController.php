@@ -145,21 +145,9 @@ class EkskulController extends Controller
     
     public function list()
     {
-        try {
-            $data = Ekskul::all();
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Ekskul berhasil diambil',
-                'data' => $data,
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat mengambil data Ekskul',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
+        $data = Ekskul::all();
+        
+        return response()->json($data);
     }
     
 }
