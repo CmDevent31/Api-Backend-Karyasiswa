@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'public'),
+    'default' => env('FILESYSTEM_DISK', 'ftp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -57,6 +57,18 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => 'your_ftp_host',
+            'username' => 'your_ftp_username',
+            'password' => 'your_ftp_password',
+            'root' => '/path/to/ftp/root', // Optional: The root directory on the FTP server.
+            'port' => 21, // Default FTP port (you can change it if necessary).
+            'passive' => true, // Use passive mode if required.
+            'ssl' => false, // Use SSL/TLS if required.
+        ],
+        
 
     ],
 
