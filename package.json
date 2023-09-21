@@ -11,6 +11,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "firebase": "^10.4.0",
+        "firebase-admin": "^11.10.1",
         "heroku": "^8.4.2",
         "node.js": "^0.0.1-security"
     }
