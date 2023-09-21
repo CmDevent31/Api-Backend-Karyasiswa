@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'firebase'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -64,12 +64,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env(':810ff5d79c83a5de7b5e3289eaaec62e9e39bd892885e15ac80cd5e808ee923c@ec2-100-24-250-155.compute-1.amazonaws.com:5432/depephis61i32j'),
-            'host' => env('DB_HOST', 'ec2-100-24-250-155.compute-1.amazonaws.com'),
+            'url' => env('postgres://kqlwqdkwkwguuf:9656c5748dc727cdf4ad27a4a75e7c843b6243db1a41b13ebf12ba753fe09a90@ec2-34-236-103-63.compute-1.amazonaws.com:5432/d5jmeq35k05rhc'),
+            'host' => env('DB_HOST', 'ec2-34-236-103-63.compute-1.amazonaws.com'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'depephis61i32j'),
-            'username' => env('DB_USERNAME', 'kvbnvlgomjaijg'),
-            'password' => env('DB_PASSWORD', '810ff5d79c83a5de7b5e3289eaaec62e9e39bd892885e15ac80cd5e808ee923c'),
+            'database' => env('DB_DATABASE', 'd5jmeq35k05rhc'),
+            'username' => env('DB_USERNAME', 'kqlwqdkwkwguuf'),
+            'password' => env('DB_PASSWORD', '9656c5748dc727cdf4ad27a4a75e7c843b6243db1a41b13ebf12ba753fe09a90'),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

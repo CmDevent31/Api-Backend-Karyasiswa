@@ -12,8 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 
 
+
+
 class EkskulController extends Controller
 {
+   
+
+    
     public function index(){
         return view('ekskul');
     }
