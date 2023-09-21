@@ -120,6 +120,7 @@ class AuthController extends Controller
         }
     }
 
+
              public function update(Request $request, $id)
             {
             try {
@@ -205,6 +206,7 @@ class AuthController extends Controller
                 ], 500);
                 }
                 }
+
 
 
 

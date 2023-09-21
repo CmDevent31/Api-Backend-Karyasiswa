@@ -73,6 +73,7 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth:api' => \Illuminate\Auth\Middleware\Authenticate::class,
-        // ... Middleware rute lainnya.
+        'firebase' => \App\Http\Middleware\FirebaseMiddleware::class,
+
     ];
 }

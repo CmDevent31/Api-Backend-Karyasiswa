@@ -12,8 +12,13 @@ use Illuminate\Support\Facades\Validator;
 
 
 
+
+
 class EkskulController extends Controller
 {
+   
+
+    
     public function index(){
         return view('ekskul');
     }
@@ -65,11 +70,12 @@ class EkskulController extends Controller
             
             // Simpan gambar ke penyimpanan
             Storage::disk('public')->put($imagePath, file_get_contents($image));
+
             
             // URL lengkap gambar (termasuk base URL)
             $fullImageUrl = asset('storage/' . $imagePath);
-            
-            $ekskul->image = $fullImageUrl; // Set URL lengkap gambar ke kolom 'image'
+    $ekskul->image = $fullImageUrl;
+
         }
         
         
@@ -148,4 +154,5 @@ class EkskulController extends Controller
         
         return response()->json($data);
     }
+    
 }
