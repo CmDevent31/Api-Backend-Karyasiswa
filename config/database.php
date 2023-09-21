@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'url' => env('q0h7yf5pynynaq54.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
+            'url' => env('mysql://fjyetlto0rlwuyum:rg3pn6jpxjyl8nep@frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/d7dqr3hs5hurj7da'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
@@ -45,11 +45,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'q0h7yf5pynynaq54.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
+            'host' => env('DB_HOST', 'frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'd7dqr3hs5hurj7da'),
-            'username' => env('DB_USERNAME', 'w2zzvl2y01otqwyd'),
-            'password' => env('DB_PASSWORD', 'ylyk1odocit3il7g'),
+            'username' => env('DB_USERNAME', 'fjyetlto0rlwuyum'),
+            'password' => env('DB_PASSWORD', 'rg3pn6jpxjyl8nep'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
@@ -64,12 +64,12 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('postgres://kqlwqdkwkwguuf:9656c5748dc727cdf4ad27a4a75e7c843b6243db1a41b13ebf12ba753fe09a90@ec2-34-236-103-63.compute-1.amazonaws.com:5432/d5jmeq35k05rhc'),
-            'host' => env('DB_HOST', 'ec2-34-236-103-63.compute-1.amazonaws.com'),
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'd5jmeq35k05rhc'),
-            'username' => env('DB_USERNAME', 'kqlwqdkwkwguuf'),
-            'password' => env('DB_PASSWORD', '9656c5748dc727cdf4ad27a4a75e7c843b6243db1a41b13ebf12ba753fe09a90'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
@@ -100,25 +100,6 @@ return [
             'username' => env('DB_USERNAME', '3bc6a989-062c-4841-8ff4-0d9fd7b1793e'),
             'password' => env('DB_PASSWORD', 'a9b83ce154c0023f418edb18797266fccc5f76db'),
         ],
-
-        'firebase' => [
-            'driver' => 'custom',
-            'url' => env('FIREBASE_DATABASE_URL'),
-            'database' => 'default',
-            'name' => 'firebase',
-            'options' => [
-                'api_key' => env('FIREBASE_API_KEY'),
-                'auth_domain' => env('FIREBASE_AUTH_DOMAIN'),
-                'project_id' => env('FIREBASE_PROJECT_ID'),
-                'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'),
-                'messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID'),
-                'app_id' => env('FIREBASE_APP_ID'),
-                'measurement_id' => env('FIREBASE_MEASUREMENT_ID'),
-            ],
-        ],
-        
-    
-    
      
 
     ],
