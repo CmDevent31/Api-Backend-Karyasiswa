@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'firebase'),
 
     /*
     |--------------------------------------------------------------------------
@@ -100,6 +100,25 @@ return [
             'username' => env('DB_USERNAME', '3bc6a989-062c-4841-8ff4-0d9fd7b1793e'),
             'password' => env('DB_PASSWORD', 'a9b83ce154c0023f418edb18797266fccc5f76db'),
         ],
+
+        'firebase' => [
+            'driver' => 'custom',
+            'url' => env('FIREBASE_DATABASE_URL'),
+            'database' => 'default',
+            'name' => 'firebase',
+            'options' => [
+                'api_key' => env('FIREBASE_API_KEY'),
+                'auth_domain' => env('FIREBASE_AUTH_DOMAIN'),
+                'project_id' => env('FIREBASE_PROJECT_ID'),
+                'storage_bucket' => env('FIREBASE_STORAGE_BUCKET'),
+                'messaging_sender_id' => env('FIREBASE_MESSAGING_SENDER_ID'),
+                'app_id' => env('FIREBASE_APP_ID'),
+                'measurement_id' => env('FIREBASE_MEASUREMENT_ID'),
+            ],
+        ],
+        
+    
+    
      
 
     ],

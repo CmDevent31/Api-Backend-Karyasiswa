@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'public'),
+    'default' => env('FILESYSTEM_DISK', 'firebase'),
 
     /*
     |--------------------------------------------------------------------------
@@ -58,16 +58,16 @@ return [
             'throw' => false,
         ],
 
-        'ftp' => [
-            'driver' => 'ftp',
-            'host' => 'your_ftp_host',
-            'username' => 'your_ftp_username',
-            'password' => 'your_ftp_password',
-            'root' => '/path/to/ftp/root', // Optional: The root directory on the FTP server.
-            'port' => 21, // Default FTP port (you can change it if necessary).
-            'passive' => true, // Use passive mode if required.
-            'ssl' => false, // Use SSL/TLS if required.
+        'firebase' => [
+            'driver' => 'firebase',
+            'project_id' => env('FIREBASE_PROJECT_ID'),
+            'bucket' => env('FIREBASE_STORAGE_BUCKET'),
+            'storage_base_url' => env('FIREBASE_STORAGE_BASE_URL'),
+            'max_retries' => 0,
+            'timeout' => 30,
         ],
+        
+        
         
 
     ],
