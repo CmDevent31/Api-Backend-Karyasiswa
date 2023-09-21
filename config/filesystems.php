@@ -38,7 +38,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('storage/app/public'),
+            'root' => public_path(),
             'url' => env('APP_URL').'https://backend-karya-siswa-2659a9a81981.herokuapp.com/',
             'visibility' => 'public',
             'throw' => false,
