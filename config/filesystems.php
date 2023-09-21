@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => env('FILESYSTEM_DISK', 'firebase'),
+    'default' => env('FILESYSTEM_DISK', 'local'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,12 +38,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL') . '/storage',
+            'root' => storage_path('storage/app/public'),
+            'url' => env('APP_URL').'https://backend-karya-siswa-2659a9a81981.herokuapp.com/',
             'visibility' => 'public',
             'throw' => false,
         ],
-        
         
 
         's3' => [
@@ -57,18 +56,6 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
-
-        'firebase' => [
-            'driver' => 'firebase',
-            'project_id' => env('FIREBASE_PROJECT_ID'),
-            'bucket' => env('FIREBASE_STORAGE_BUCKET'),
-            'storage_base_url' => env('FIREBASE_STORAGE_BASE_URL'),
-            'max_retries' => 0,
-            'timeout' => 30,
-        ],
-        
-        
-        
 
     ],
 
