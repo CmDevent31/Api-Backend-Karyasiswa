@@ -148,79 +148,90 @@ class AuthController extends Controller
             ], 500);
         }
     }
-public function update(Request $request, $id)
-{
-  
-
-        // 7. Validasi data yang dikirim dalam permintaan
-        $validator = Validator::make($request->all(), [
-            'email' => 'sometimes|required|email|max:255|unique:users,email,' . $userToUpdate->id,
-            'password' => 'sometimes|required|min:6',
-            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
-            'username' => 'sometimes|required|max:255',
-            'kelas' => 'sometimes|required|max:20',
-            'dob' => 'sometimes|required|max:255',
-            'bio' => 'sometimes|required|max:255',
-            'phone_number' => 'sometimes|required|max:14',
-        ]);
-
-        // 8. Jika validasi gagal, kembalikan respons dengan pesan kesalahan
-        if ($validator->fails()) {
+    public function update(Request $request, $id)
+    {
+        try {
+            // 1. Validasi input
+            $validator = Validator::make($request->all(), [
+                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $id,
+                'password' => 'sometimes|required|min:6',
+                'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
+                'username' => 'sometimes|required|max:255',
+                'kelas' => 'sometimes|required|max:20',
+                'dob' => 'sometimes|required|max:255',
+                'bio' => 'sometimes|required|max:255',
+                'phone_number' => 'sometimes|required|max:14',
+            ]);
+    
+            // 2. Jika validasi gagal, kembalikan respons dengan pesan kesalahan
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Validasi gagal: ' . $validator->errors()->first(),
+                    'data' => (object)[],
+                ], 422);
+            }
+    
+            // 3. Dapatkan pengguna yang terotentikasi
+            $userToUpdate = auth()->user();
+    
+            // 4. Pastikan bahwa pengguna yang mencoba memperbarui data adalah pemilik data
+            if ($userToUpdate->id != $id) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Anda tidak memiliki izin untuk memperbarui data ini',
+                    'data' => (object)[],
+                ], 403);
+            }
+    
+            // 5. Memeriksa dan mengupdate data sesuai dengan permintaan
+            if ($request->has('email')) {
+                $userToUpdate->email = $request->input('email');
+            }
+            if ($request->has('password')) {
+                $userToUpdate->password = Hash::make($request->input('password'));
+            }
+            if ($request->has('username')) {
+                $userToUpdate->username = $request->input('username');
+            }
+            if ($request->has('kelas')) {
+                $userToUpdate->kelas = $request->input('kelas');
+            }
+            if ($request->has('dob')) {
+                $userToUpdate->dob = $request->input('dob');
+            }
+            if ($request->hasFile('profile_image')) {
+                // 6. Validasi dan simpan file gambar (gantilah dengan kode validasi dan penyimpanan yang sesuai)
+                // ...
+    
+                // 7. Setelah validasi, simpan URL gambar dalam $userToUpdate->profile_image
+            }
+            if ($request->has('bio')) {
+                $userToUpdate->bio = $request->input('bio');
+            }
+            if ($request->has('phone_number')) {
+                $userToUpdate->phone_number = $request->input('phone_number');
+            }
+    
+            // 8. Simpan perubahan pada data pengguna
+            $userToUpdate->save();
+    
+            // 9. Kembalikan respons berhasil
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data pengguna berhasil diperbarui',
+                'data' => $userToUpdate,
+            ], 200);
+        } catch (\Exception $e) {
+            // 10. Tangani kesalahan internal server dengan respons 500
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validasi gagal: ' . $validator->errors()->first(),
+                'message' => 'Terjadi kesalahan internal server: ' . $e->getMessage(),
                 'data' => (object)[],
-            ], 422);
+            ], 500);
         }
-
-        // 9. Memeriksa dan mengupdate data sesuai dengan permintaan
-        if ($request->has('email')) {
-            $userToUpdate->email = $request->input('email');
-        }
-        if ($request->has('password')) {
-            $userToUpdate->password = Hash::make($request->input('password'));
-        }
-        if ($request->has('username')) {
-            $userToUpdate->username = $request->input('username');
-        }
-        if ($request->has('kelas')) {
-            $userToUpdate->kelas = $request->input('kelas');
-        }
-        if ($request->has('dob')) {
-            $userToUpdate->dob = $request->input('dob');
-        }
-        if ($request->hasFile('profile_image')) {
-            // 10. Validasi dan simpan file gambar (gantilah dengan kode validasi dan penyimpanan yang sesuai)
-            // ...
-
-            // 11. Setelah validasi, simpan URL gambar dalam $userToUpdate->profile_image
-        }
-        if ($request->has('bio')) {
-            $userToUpdate->bio = $request->input('bio');
-        }
-        if ($request->has('phone_number')) {
-            $userToUpdate->phone_number = $request->input('phone_number');
-        }
-
-        // 12. Simpan perubahan pada data pengguna
-        $userToUpdate->save();
-
-        // 13. Kembalikan respons berhasil
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Data pengguna berhasil diperbarui',
-            'data' => $userToUpdate,
-        ], 200);
-   
-        // 14. Tangani kesalahan internal server dengan respons 500
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Terjadi kesalahan internal server: ' . $e->getMessage(),
-            'data' => (object)[],
-        ], 500);
+    }
     
-}
-
     
 
     public function getUserInfo()
