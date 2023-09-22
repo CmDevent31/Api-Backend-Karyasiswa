@@ -148,6 +148,14 @@ class AuthController extends Controller
             ], 500);
         }
     }
+    
+public function edit($id){
+    $auth = DB::table('users')->where('user_id',$id)->get();
+    return view('edit', ['auth' => $auth]);
+}
+
+
+
 public function update(Request $request, $id)
 {
   
