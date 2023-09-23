@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','update','logout']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','logout']]);
     }
 
     public function login(Request $request)
@@ -149,10 +149,10 @@ class AuthController extends Controller
         }
     }
     
-public function edit($id){
-    $auth = DB::table('users')->where('user_id',$id)->get();
-    return view('edit', ['auth' => $auth]);
-}
+// public function edit($id){
+//     $auth = DB::table('users')->where('user_id',$id)->get();
+//     return view('edit', ['auth' => $auth]);
+// }
 
 
 
