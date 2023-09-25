@@ -64,14 +64,14 @@ class EkskulController extends Controller
         $ekskul->title = $request->input('title');
         $ekskul->description = $request->input('description');
     
-        if ($request->hasFile('profile_image')) {
-            // Handle image upload and update profile_image field
-            $image = $request->file('profile_image');
+  
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
             $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
 
             Storage::disk('public')->put($imagePath, file_get_contents($image));
 
-            $userToUpdate->profile_image = url(Storage::url($imagePath));
+            $ekskul->image = url(Storage::url($imagePath));
         }
         
         
