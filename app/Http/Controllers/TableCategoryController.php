@@ -8,7 +8,8 @@ use App\Models\TableCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
-
+use App\Http\Requests\StoreTableCategoryRequest;
+use App\Http\Requests\UpdateTableCategoryRequest;
 
 class TableCategoryController extends Controller
 {
@@ -48,6 +49,9 @@ class TableCategoryController extends Controller
         }
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create(Request $request)
     {
         try{
@@ -70,8 +74,6 @@ class TableCategoryController extends Controller
                 ], 422);
         }
     }
-    
-    
 
     /**
      * Store a newly created resource in storage.
