@@ -5,6 +5,7 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -23,8 +24,15 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register any authentication / authorization services.
      */
-    public function boot(): void
+  
+    
+    public function boot()
     {
-        //
+        $this->registerPolicies();
+    
+        Gate::define('update-user', function ($user, $profileUser) {
+            return $user->id === $profileUser->id;
+        });
     }
 }
+    
