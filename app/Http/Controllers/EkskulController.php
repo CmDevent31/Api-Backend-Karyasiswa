@@ -91,8 +91,8 @@ class EkskulController extends Controller
     {
         // Define validation rules
         $validator = Validator::make($request->all(), [
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
+            'title' => 'sometimes|string|max:255',
+            'description' => 'sometimes|string',
             'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
@@ -117,7 +117,7 @@ class EkskulController extends Controller
         }
     
         // Update Ekskul data
-        $ekskul->fill($request->only(['title', 'description']));
+        $ekskul->fill($request->only(['title', 'description', 'image']));
     
         if ($request->hasFile('image')) {
             $image = $request->file('image');
