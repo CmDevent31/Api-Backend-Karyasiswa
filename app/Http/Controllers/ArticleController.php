@@ -69,24 +69,19 @@ class ArticleController extends Controller
             $article->user_id = $validated['user_id'];
             $article->categori_id = $validated['categori_id'];
             $article->total_comment = 0;
+              
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
     
+                Storage::disk('public')->put($imagePath, file_get_contents($image));
+    
+                $article->image = url(Storage::url($imagePath));
+            
             $article->save();
     
-            if ($request->hasFile('image')) {
-                foreach ($request->file('image') as $image) {
-                    $imagePath = $image->store('public/images');
-    
-                    // Assuming you have symlink set up for storage folder
-                    // Get the public URL of the stored image
-                    $imageUrl = asset('storage/' . str_replace('public/', '', $imagePath));
-    
-                    // Create an ArticleImage model to associate the image with the article
-                    $articleImage = new ArticleImage;
-                    $articleImage->image = $imageUrl;
-    
-                    // Save the article image with the article relationship
-                    $article->images()->save($articleImage);
-                }
+  
+        
             }
             
     
@@ -195,24 +190,16 @@ class ArticleController extends Controller
         $article->save();
     
         // Handle the image upload
+       
         if ($request->hasFile('image')) {
-            $images = $request->file('image');
-    
-            // Delete existing images (optional, if you want to replace all images)
-            $article->images()->delete();
-    
-            // Upload and save the new images
-            foreach ($images as $image) {
-                $imagePath = $image->store('public/images');
-                $imageUrl = asset('storage/' . str_replace('public/', '', $imagePath));
-                // Create an ArticleImage model to associate the image with the article
-                $articleImage = new ArticleImage;
-                $articleImage->image = $imageUrl;
-    
-                // Associate the image with the article
-                $article->images()->save($articleImage);
-            }
+            $image = $request->file('image');
+            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
+
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
+
+            $article->image = url(Storage::url($imagePath));
         }
+        
     
         // Load the missing image relationship if it exists
         $article->loadMissing('images');
