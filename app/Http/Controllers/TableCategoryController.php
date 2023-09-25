@@ -49,52 +49,29 @@ class TableCategoryController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(Request $request)
     {
-        try {
-            // Define validation rules
-            $rules = [
-                'name' => 'required|string|max:255',
-                // Tambahkan aturan validasi lainnya jika ada
-            ];
-    
-            // Validasi permintaan
-            $validator = Validator::make($request->all(), $rules);
-    
-            // Jika validasi gagal, kembalikan respon dengan pesan kesalahan validasi
-            if ($validator->fails()) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validasi Gagal',
-                    'errors' => $validator->errors(),
-                ], 422);
-            }
-    
-            // Buat objek TableCategory
+        try{
+
             $tableCategory = new TableCategory;
             $tableCategory->name = $request->input('name');
             // Setel nilai atribut lainnya jika ada
-    
-            // Simpan objek ke database
+            
             $tableCategory->save();
-    
             return response()->json([
                 'success' => true,
                 'message' => 'Kategori Berhasil Disimpan!',
                 'data' => $tableCategory,
             ], 201);
-        } catch (\Exception $e) {
-            // Tangani exception umum (jika terjadi)
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat menyimpan data.',
-                'error' => $e->getMessage(), // Anda dapat menambahkan detail error jika perlu
-            ], 500);
+        }catch (ValidationException $validationException) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi Gagal',
+                    'errors' => $validationException->errors(),
+                ], 422);
         }
     }
+    
     
 
     /**
