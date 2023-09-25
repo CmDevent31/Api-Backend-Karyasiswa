@@ -87,7 +87,6 @@ class EkskulController extends Controller
     }
 
 
-
     public function update(Request $request, $id)
     {
         // Define validation rules
@@ -116,22 +115,19 @@ class EkskulController extends Controller
                 'data' => (object)[],
             ], 404);
         }
-        $ekskul->fill($request->only([
-            // 'name', 'category_id', 'description', 'price', 'discount', 'rating', 'brand', 'member_id', 'image'
-            'name', 'image', 'description'
-        ]));
+    
         // Update Ekskul data
-        $ekskul->title = $request->input('title');
-        $ekskul->description = $request->input('description');
-        
+        $ekskul->fill($request->only(['title', 'description']));
+    
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-
+    
             Storage::disk('public')->put($imagePath, file_get_contents($image));
-
+    
             $ekskul->image = url(Storage::url($imagePath));
         }
+    
         // Simpan data ekskul
         $ekskul->save();
     
@@ -141,7 +137,7 @@ class EkskulController extends Controller
             'data' => $ekskul,
         ], 200);
     }
-
+    
     
     public function list()
     {
