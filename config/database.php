@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    'default' => env('DB_CONNECTION', 'mysql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -45,11 +45,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
+            'host' => env('DB_HOST', 'ebh2y8tqym512wqs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com'),
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'd7dqr3hs5hurj7da'),
-            'username' => env('DB_USERNAME', 'fjyetlto0rlwuyum'),
-            'password' => env('DB_PASSWORD', 'rg3pn6jpxjyl8nep'),
+            'database' => env('DB_DATABASE', 'yy4a0gicuygj9a8a'),
+            'username' => env('DB_USERNAME', 'qcrfks36ewkywywa'),
+            'password' => env('DB_PASSWORD', 'aejhzi9lwrfs5njd'),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
