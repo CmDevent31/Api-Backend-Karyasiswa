@@ -82,17 +82,14 @@ public function add(Request $request)
         $Product->save();
 
         if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-                $imagePath = $image->store('public/images');
+            $image = $request->file('image');
+            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
 
-                // Create an ProductImage model to associate the image with the Product
-                $ProductImage = new ProductImage;
-                $ProductImage->image = $imagePath;
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
 
-                // Save the ProductImage with the Product relationship
-                $Product->images()->save($ProductImage);
-            }
+            $product->image = url(Storage::url($imagePath));
         }
+        
 
         // Hide 'updated_at' and 'deleted_at' columns
         $Product->makeHidden(['updated_at', 'deleted_at']);
@@ -180,26 +177,16 @@ public function add(Request $request)
     // dd($Product);
 
 
-    // Handle the image upload
+  
     if ($request->hasFile('image')) {
-        $images = $request->file('image');
+        $image = $request->file('image');
+        $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
 
-        // Delete existing images (optional, if you want to replace all images)
-        $Product->images()->delete();
+        Storage::disk('public')->put($imagePath, file_get_contents($image));
 
-        // Upload and save the new images
-        foreach ($images as $image) {
-            $imagePath = $image->store('public/images');
-
-            // Create an ProductImage model to associate the image with the Product
-            $ProductImage = new ProductImage;
-            $ProductImage->product_id = $Product->id;
-            $ProductImage->image = $imagePath;
-
-            // Associate the image with the Product
-            $Product->images()->save($ProductImage);
-        }
+        $product->image = url(Storage::url($imagePath));
     }
+    
 
     // Load the missing image relationship if it exists
     $Product->loadMissing('images');

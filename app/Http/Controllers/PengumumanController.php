@@ -64,20 +64,18 @@ class PengumumanController extends Controller
         $pengumumans->description = $validated['description'];
         $pengumumans->waktu= $validated['waktu'];
        
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
 
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
+
+            $pengumumans->image = url(Storage::url($imagePath));
+        }
         $pengumumans->save();
 
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-                $imagePath = $image->store('public/images');
-
-                // Assuming you have symlink set up for storage folder
-                // Get the public URL of the stored image
-                $imageUrl = asset('storage/' . str_replace('public/', '', $imagePath));
-
-               
-            }
-        }
+       
+        
 
         
         return response()->json([
