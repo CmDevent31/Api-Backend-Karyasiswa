@@ -149,18 +149,31 @@ class AuthController extends Controller
         }
     }
     
-public function edit($id){
-    $auth = DB::table('users')->where('user_id',$id)->get();
-    return view('edit', ['auth' => $auth]);
-}
-
-
-
-public function update(Request $request, $id)
+    public function update(Request $request, $id)
 {
-  
+    try {
+        // Find the user to update by their ID
+        $userToUpdate = User::find($id);
 
-        // 7. Validasi data yang dikirim dalam permintaan
+        // Check if the user exists
+        if (!$userToUpdate) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found',
+                'data' => [],
+            ], 404);
+        }
+
+        // Check if the authenticated user is updating their own profile
+        if (auth()->user()->id !== $userToUpdate->id) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You are not authorized to update this user',
+                'data' => [],
+            ], 403);
+        }
+
+        // Validate the input data
         $validator = Validator::make($request->all(), [
             'email' => 'sometimes|required|email|max:255|unique:users,email,' . $userToUpdate->id,
             'password' => 'sometimes|required|min:6',
@@ -172,16 +185,16 @@ public function update(Request $request, $id)
             'phone_number' => 'sometimes|required|max:14',
         ]);
 
-        // 8. Jika validasi gagal, kembalikan respons dengan pesan kesalahan
+        // If validation fails, return an error response
         if ($validator->fails()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Validasi gagal: ' . $validator->errors()->first(),
-                'data' => (object)[],
+                'message' => 'Validation failed',
+                'errors' => $validator->errors(),
             ], 422);
         }
 
-        // 9. Memeriksa dan mengupdate data sesuai dengan permintaan
+        // Update user data based on the request
         if ($request->has('email')) {
             $userToUpdate->email = $request->input('email');
         }
@@ -198,10 +211,13 @@ public function update(Request $request, $id)
             $userToUpdate->dob = $request->input('dob');
         }
         if ($request->hasFile('profile_image')) {
-            // 10. Validasi dan simpan file gambar (gantilah dengan kode validasi dan penyimpanan yang sesuai)
-            // ...
+            // Handle image upload and update profile_image field
+            $image = $request->file('profile_image');
+            $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
 
-            // 11. Setelah validasi, simpan URL gambar dalam $userToUpdate->profile_image
+            Storage::disk('public')->put($imagePath, file_get_contents($image));
+
+            $userToUpdate->profile_image = url(Storage::url($imagePath));
         }
         if ($request->has('bio')) {
             $userToUpdate->bio = $request->input('bio');
@@ -210,24 +226,23 @@ public function update(Request $request, $id)
             $userToUpdate->phone_number = $request->input('phone_number');
         }
 
-        // 12. Simpan perubahan pada data pengguna
+        // Save the updated user data
         $userToUpdate->save();
 
-        // 13. Kembalikan respons berhasil
         return response()->json([
             'status' => 'success',
-            'message' => 'Data pengguna berhasil diperbarui',
+            'message' => 'User data updated successfully',
             'data' => $userToUpdate,
         ], 200);
-   
-        // 14. Tangani kesalahan internal server dengan respons 500
+    } catch (\Exception $e) {
         return response()->json([
             'status' => 'error',
-            'message' => 'Terjadi kesalahan internal server: ' . $e->getMessage(),
-            'data' => (object)[],
+            'message' => 'Internal server error',
+            'data' => [],
         ], 500);
-    
+    }
 }
+
 
     
 
