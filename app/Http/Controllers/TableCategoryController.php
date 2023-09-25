@@ -54,26 +54,48 @@ class TableCategoryController extends Controller
      */
     public function create(Request $request)
     {
-        try{
-
+        try {
+            // Define validation rules
+            $rules = [
+                'name' => 'required|string|max:255',
+                // Tambahkan aturan validasi lainnya jika ada
+            ];
+    
+            // Validasi permintaan
+            $validator = Validator::make($request->all(), $rules);
+    
+            // Jika validasi gagal, kembalikan respon dengan pesan kesalahan validasi
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validasi Gagal',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+    
+            // Buat objek TableCategory
             $tableCategory = new TableCategory;
             $tableCategory->name = $request->input('name');
             // Setel nilai atribut lainnya jika ada
-            
+    
+            // Simpan objek ke database
             $tableCategory->save();
+    
             return response()->json([
                 'success' => true,
                 'message' => 'Kategori Berhasil Disimpan!',
                 'data' => $tableCategory,
             ], 201);
-        }catch (ValidationException $validationException) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Validasi Gagal',
-                    'errors' => $validationException->errors(),
-                ], 422);
+        } catch (\Exception $e) {
+            // Tangani exception umum (jika terjadi)
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat menyimpan data.',
+                'error' => $e->getMessage(), // Anda dapat menambahkan detail error jika perlu
+            ], 500);
         }
     }
+    
 
     /**
      * Store a newly created resource in storage.
