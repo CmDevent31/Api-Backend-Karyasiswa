@@ -37,7 +37,7 @@ return [
 
         'sqlite' => [
             'driver' => 'sqlite',
-            'url' => env('mysql://fjyetlto0rlwuyum:rg3pn6jpxjyl8nep@frwahxxknm9kwy6c.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/d7dqr3hs5hurj7da'),
+            'url' => env('mysql://qcrfks36ewkywywa:aejhzi9lwrfs5njd@ebh2y8tqym512wqs.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/yy4a0gicuygj9a8a'),
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
