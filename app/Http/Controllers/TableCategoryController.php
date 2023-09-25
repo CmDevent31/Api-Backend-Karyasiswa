@@ -8,8 +8,7 @@ use App\Models\TableCategory;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Validation\ValidationException;
-use App\Http\Requests\StoreTableCategoryRequest;
-use App\Http\Requests\UpdateTableCategoryRequest;
+
 
 class TableCategoryController extends Controller
 {
