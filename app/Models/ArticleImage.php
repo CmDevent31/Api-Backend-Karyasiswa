@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArticleImage extends Model
 {
+    use HasFactory;
     protected $table = 'table_article_images'; // Specify the correct table name here
 
     protected $fillable = ['image', 'article_id'];
