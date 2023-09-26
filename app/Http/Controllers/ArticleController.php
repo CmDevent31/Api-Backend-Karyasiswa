@@ -37,11 +37,11 @@ class ArticleController extends Controller
     
             // Load total comment count for each article and update the total_comments field
     
-            $data = Article::with('images')->get(); // Load the associated images
+            $article = Article::with('images')->get(); // Load the associated images
             return response()->json([
                 'success' => true,
                 'message' => 'List Article!',
-                'data'    => $data->loadMissing('images'),
+                'data'    => $article->loadMissing('images'),
             ], 200);
             
     
@@ -279,5 +279,10 @@ class ArticleController extends Controller
                 'data' => (object)[],
             ], 200);
         }
+    }
+    public function showimage(){
+        $data = ArticleImage::all();
+        
+        return response()->json($data);
     }
 }
