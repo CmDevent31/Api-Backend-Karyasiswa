@@ -24,16 +24,15 @@ class GuruController extends Controller
 
         $guru = new Guru();
         $guru->title = $request->input('title');
-      
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imagePath = 'uploads/' . time() . '_' . Str::slug(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $image->getClientOriginalExtension();
-
+            
+            // Simpan gambar ke penyimpanan
             Storage::disk('public')->put($imagePath, file_get_contents($image));
-
-            $guru->image = url(Storage::url($imagePath));
+            
+            $guru->image = url(Storage::url($imagePath)); // Mengambil URL lengkap gambar
         }
-        
         $guru->save();
 
         return response()->json([
