@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','update','logout']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','logout']]);
     }
 
     public function login(Request $request)
@@ -149,52 +149,78 @@ class AuthController extends Controller
         }
     }
     
+    public function edit(Request $request, $id)
+    {
+        try {
+            $userToEdit = User::find($id);
+    
+            if (!$userToEdit) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'User not found',
+                    'data' => [],
+                ], 404);
+            }
+    
+            // Check if the authenticated user is allowed to edit this user
+            if (Gate::allows('update-user', $userToEdit)) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'You can edit this user',
+                    'data' => $userToEdit,
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You are not authorized to edit this user',
+                    'data' => [],
+                ], 403);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Internal server error',
+                'data' => [],
+            ], 500);
+        }
+    }
+    
     public function update(Request $request, $id)
-{
-    try {
-        // Find the user to update by their ID
-        $userToUpdate = User::find($id);
-
-        // Check if the user exists
-        if (!$userToUpdate) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'User not found',
-                'data' => [],
-            ], 404);
-        }
-
-        // Check if the authenticated user is updating their own profile
-        if (auth()->user()->id !== $userToUpdate->id) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'You are not authorized to update this user',
-                'data' => [],
-            ], 403);
-        }
-
-        // Validate the input data
-        $validator = Validator::make($request->all(), [
-            'email' => 'sometimes|required|email|max:255|unique:users,email,' . $userToUpdate->id,
-            'password' => 'sometimes|required|min:6',
-            'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
-            'username' => 'sometimes|required|max:255',
-            'kelas' => 'sometimes|required|max:20',
-            'dob' => 'sometimes|required|max:255',
-            'bio' => 'sometimes|required|max:255',
-            'phone_number' => 'sometimes|required|max:14',
-        ]);
-
-        // If validation fails, return an error response
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
-        }
-
-        // Update user data based on the request
+    {
+        try {
+            $userToUpdate = User::find($id);
+    
+            if (!$userToUpdate) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'User not found',
+                    'data' => [],
+                ], 404);
+            }
+    
+            // Check if the authenticated user is allowed to update this user
+            if (Gate::allows('update-user', $userToUpdate)) {
+                // Validasi input data (sesuaikan dengan kebutuhan Anda)
+                 $validator = Validator::make($request->all(), [
+                'email' => 'sometimes|required|email|max:255|unique:users,email,' . $userToUpdate->id,
+                'password' => 'sometimes|required|min:6',
+                'profile_image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:20480',
+                'username' => 'sometimes|required|max:255',
+                'kelas' => 'sometimes|required|max:20',
+                'dob' => 'sometimes|required|max:255',
+                'bio' => 'sometimes|required|max:255',
+                'phone_number' => 'sometimes|required|max:14',
+            ]);
+    
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Validation failed',
+                        'errors' => $validator->errors(),
+                    ], 422);
+                }
+    
+               // Update user data based on the request
         if ($request->has('email')) {
             $userToUpdate->email = $request->input('email');
         }
@@ -226,22 +252,31 @@ class AuthController extends Controller
             $userToUpdate->phone_number = $request->input('phone_number');
         }
 
-        // Save the updated user data
-        $userToUpdate->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User data updated successfully',
-            'data' => $userToUpdate,
-        ], 200);
-    } catch (\Exception $e) {
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Internal server error',
-            'data' => [],
-        ], 500);
+    
+                // Simpan data pengguna yang telah diperbarui
+                $userToUpdate->save();
+    
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'User data updated successfully',
+                    'data' => $userToUpdate,
+                ], 200);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You are not authorized to update this user',
+                    'data' => [],
+                ], 403);
+            }
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Internal server error',
+                'data' => [],
+            ], 500);
+        }
     }
-}
+
 
 
     
