@@ -63,7 +63,6 @@ public function add(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|max:255',
-            'categori_id' => 'required|exists:table_categories,id',
             'description' => 'required',
             'price' => 'required',
             'brand' => 'required',
@@ -73,7 +72,6 @@ public function add(Request $request)
     
         $Product = new Product;
         $Product->name = $validated['name'];
-        $Product->categori_id = $validated['categori_id'];
         $Product->description = $validated['description'];
         $Product->price = $validated['price'];
         $Product->brand = $validated['brand'];
@@ -95,14 +93,8 @@ public function add(Request $request)
             }
         }
         
-        // Hide 'updated_at' and 'deleted_at' columns
-        $Product->makeHidden(['updated_at', 'deleted_at']);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Product Berhasil Disimpan!',
-            'data' => $Product->loadMissing('images'),
-        ], 201);
+      
+        return redirect('http://127.0.0.1:8000/Product?success=true');
     }
     /**
      * Store a newly created resource in storage.
@@ -116,22 +108,28 @@ public function add(Request $request)
      * Get the details of a specific member.
      */
     public function detail($id)
-    {
-        $Product = Product::findOrFail($id);
-             if ($Product) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Detail Product!',
-                'data'    => $Product->loadMissing(['ProductStock', 'images']),
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Product Tidak Ditemukan!',
-                'data' => (object)[],
-            ], 401);
-        }
+{
+    // // Debugging: Tambahkan pesan log
+    // \Log::info("Mencoba mendapatkan detail produk dengan ID: $id");
+
+    // Ambil produk berdasarkan ID
+    $product = Product::find($id);
+
+    if ($product) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail Product!',
+            'data' => $product->loadMissing('images'),
+        ], 200);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Product Tidak Ditemukan!',
+            'data' => (object)[],
+        ], 404); // Gunakan 404 Not Found jika produk tidak ditemukan
     }
+}
+
 
    
 
@@ -143,7 +141,6 @@ public function add(Request $request)
     // Define validation rules
     $validator = Validator::make($request->all(), [
         'name' => 'sometimes|required|max:255',
-        'categori_id' => 'sometimes|required|exists:table_categories,id',
         'description' => 'sometimes|required',
         'price' => 'sometimes|required',
         'brand' => 'sometimes|required',

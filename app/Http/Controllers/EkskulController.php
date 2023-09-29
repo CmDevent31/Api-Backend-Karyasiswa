@@ -149,7 +149,8 @@ class EkskulController extends Controller
     public function list()
     {
         $data = Ekskul::all();
-        
+        $apiUrl = env('GATEAWAY_API');
+
         return response()->json($data);
     }
     
