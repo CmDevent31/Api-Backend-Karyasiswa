@@ -39,11 +39,8 @@ class EventsController extends Controller
 
         $event->save();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Berhasil Menambahkan Events!',
-            'data' => $event
-        ], 201);
+      
+        return redirect('http://127.0.0.1:8000/Article?success=true');
     }
 
     public function update(Request $request, $id)

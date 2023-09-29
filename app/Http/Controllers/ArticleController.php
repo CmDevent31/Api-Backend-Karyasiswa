@@ -61,8 +61,8 @@ class ArticleController extends Controller
             $validated = $request->validate([
                 'title' => 'required|max:255',
                 'description' => 'required',
-                'user_id' => 'required|exists:users,id', // Check if member_id exists in the 'table_member' table
-                'categori_id' => 'required|exists:table_categories,id', // Check if categori_id exists in the 'table_categories' table
+                'user_id' => 'required|exists:users,id',
+                'categori_id' => 'required|exists:table_categories,id',
                 'image.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
     
@@ -91,16 +91,12 @@ class ArticleController extends Controller
                     $article->images()->save($articleImage);
                 }
             }
-            
     
             // Hide 'updated_at' and 'deleted_at' columns
             $article->makeHidden(['updated_at', 'deleted_at']);
     
-            return response()->json([
-                'success' => true,
-                'message' => 'Artikel Berhasil Disimpan!',
-                'data' => $article->loadMissing('images'),
-            ], 201);
+            // Redirect to the specified URL with a success query parameter
+            return redirect('http://127.0.0.1:8000/KaryaSiswa?success=true');
         } catch (ValidationException $validationException) {
             return response()->json([
                 'success' => false,
