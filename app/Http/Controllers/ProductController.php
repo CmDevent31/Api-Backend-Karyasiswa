@@ -109,26 +109,33 @@ public function add(Request $request)
      */
     public function detail($id)
 {
-    // // Debugging: Tambahkan pesan log
-    // \Log::info("Mencoba mendapatkan detail produk dengan ID: $id");
+    try {
+        $product = Product::findOrFail($id);
+        $product->makeHidden(['created_at','updated_at', 'deleted', 'deleted_at']);
 
-    // Ambil produk berdasarkan ID
-    $product = Product::find($id);
+        $productStocks = ProductStock::where('product_id', $product->id)->get();
+        $productStocks->makeHidden(['created_at','updated_at', 'deleted', 'deleted_at']);
+        $product->loadMissing(['images']);
+        $product->productStocks = $productStocks;
 
-    if ($product) {
         return response()->json([
             'success' => true,
-            'message' => 'Detail Product!',
-            'data' => $product->loadMissing('images'),
+            'message' => 'Detail Produk',
+            'data' => $product,
         ], 200);
-    } else {
+    } catch (ModelNotFoundException $e) {
         return response()->json([
             'success' => false,
-            'message' => 'Product Tidak Ditemukan!',
-            'data' => (object)[],
-        ], 404); // Gunakan 404 Not Found jika produk tidak ditemukan
+            'message' => 'Produk tidak ditemukan',
+        ], 404);
+    } catch (Exception $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Internal Server Error',
+        ], 500);
     }
 }
+
 
 
    
