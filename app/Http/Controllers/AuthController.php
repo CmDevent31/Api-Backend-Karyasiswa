@@ -62,15 +62,7 @@ class AuthController extends Controller
             // Mengambil data pengguna yang terautentikasi
             $user = auth()->user();
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Login berhasil',
-                'data' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer'
-                ]
-            ]);
+            return redirect('http://127.0.0.1:8000/Home?success=true');
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
@@ -91,7 +83,7 @@ class AuthController extends Controller
                 'username' => 'required|string|max:255|unique:users',
                 'kelas' => 'required|string|max:11',
                 'gender' => 'required|in:Pria,Wanita',
-                'dob' => 'required|date|max:255',
+                'dob' => 'required|max:255',
                 'bio' => 'required|string|max:255',
                 'phone_number' => 'required|string|max:14',
             ]);
@@ -131,15 +123,7 @@ class AuthController extends Controller
 
             $token = JWTAuth::fromUser($user);
 
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Pengguna berhasil dibuat',
-                'data' => $user,
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer'
-                ]
-            ]);
+            return redirect('http://127.0.0.1:8000/Login?success=true');
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
